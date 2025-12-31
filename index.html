@@ -10,7 +10,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap"
         rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=3">
 </head>
 
 <body>
@@ -49,21 +49,21 @@
             <div class="glass-card slide-up">
                 <h2 class="romantic-title">Happy New Year!</h2>
                 <div class="message-content">
-                    <p>To the one who makes every year brighter.</p>
-                    <p>Here's to another 365 days of making memories, laughing together, and growing our love.</p>
+                    <!-- Text will be injected here on button click -->
+                    <div id="dynamic-message" class="hidden-message"></div>
 
                     <!-- Memory Lane -->
                     <div class="memory-lane">
                         <div class="memory-card" style="transform: rotate(-2deg);">
-                            <div class="photo-placeholder">📷</div>
-                            <p class="caption">Our First Date</p>
+                            <img src="assets/photo1.jpg" alt="Our Memory" class="polaroid-img">
+                            <p class="caption">Our Memory</p>
                         </div>
                         <div class="memory-card" style="transform: rotate(3deg); margin-top: 20px;">
-                            <div class="photo-placeholder">✈️</div>
+                            <img src="assets/photo2.jpg" alt="Our Adventures" class="polaroid-img">
                             <p class="caption">Our Adventures</p>
                         </div>
                         <div class="memory-card" style="transform: rotate(-1deg);">
-                            <div class="photo-placeholder">❤️</div>
+                            <img src="assets/photo3.jpg" alt="Just Us" class="polaroid-img">
                             <p class="caption">Just Us</p>
                         </div>
                     </div>
@@ -76,8 +76,15 @@
         </section>
     </main>
 
+    <!-- Controls -->
+    <button id="music-toggle" class="control-btn" title="Toggle Music">🎵</button>
+
+    <audio id="bg-music" loop>
+        <source src="assets/rakhlo tum.mp3" type="audio/mpeg">
+    </audio>
+
     <div class="overlay"></div>
-    <script src="script.js"></script>
+    <script src="script.js?v=3"></script>
 </body>
 
 </html>

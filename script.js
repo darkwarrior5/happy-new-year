@@ -33,7 +33,7 @@ class Particle {
         this.y += this.speedY;
         this.opacity += this.fadeDir;
         if (this.opacity <= 0 || this.opacity >= 1) this.fadeDir *= -1;
-        
+
         // Wrap around screen
         if (this.x < 0) this.x = width;
         if (this.x > width) this.x = 0;
@@ -69,7 +69,7 @@ class Firework {
         this.distanceTraveled = 0;
         this.coordinates = [];
         this.coordinateCount = 3;
-        while(this.coordinateCount--) {
+        while (this.coordinateCount--) {
             this.coordinates.push([this.x, this.y]);
         }
         this.acceleration = 1.05;
@@ -80,7 +80,7 @@ class Firework {
 
     update(index) {
         // Remove from array if exploded
-        if(this.exploded) {
+        if (this.exploded) {
             fireworks.splice(index, 1);
             createParticles(this.targetX, this.targetY); // Create explosion particles
             return;
@@ -91,13 +91,13 @@ class Firework {
 
         // Speed up
         this.speed *= this.acceleration;
-        
+
         const vx = Math.cos(this.angle) * this.speed;
         const vy = Math.sin(this.angle) * this.speed;
-        
+
         this.distanceTraveled = Math.sqrt(Math.pow(this.x - this.startX, 2) + Math.pow(this.y - this.startY, 2));
 
-        if(this.distanceTraveled >= this.distanceToTarget) {
+        if (this.distanceTraveled >= this.distanceToTarget) {
             this.exploded = true;
         } else {
             this.x += vx;
@@ -109,7 +109,7 @@ class Firework {
         ctx.beginPath();
         ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
         ctx.lineTo(this.x, this.y);
-        ctx.strokeStyle = `hsl(${random(0,360)}, 100%, ${this.brightness}%)`;
+        ctx.strokeStyle = `hsl(${random(0, 360)}, 100%, ${this.brightness}%)`;
         ctx.stroke();
     }
 }
@@ -129,18 +129,18 @@ class Spark {
         this.alpha = 1;
         this.decay = random(0.015, 0.03);
     }
-    
+
     update(index) {
         this.speed *= this.friction;
         this.x += Math.cos(this.angle) * this.speed;
         this.y += Math.sin(this.angle) * this.speed + this.gravity;
         this.alpha -= this.decay;
-        
+
         if (this.alpha <= 0) {
             sparks.splice(index, 1);
         }
     }
-    
+
     draw() {
         ctx.globalCompositeOperation = 'lighter';
         ctx.fillStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
@@ -173,14 +173,14 @@ function animate() {
     // Update Fireworks
     // We will launch fireworks randomly if celebration is active
     if (isCelebrating && Math.random() < 0.05) {
-        fireworks.push(new Firework(width/2, height, random(100, width-100), random(50, height/2)));
+        fireworks.push(new Firework(width / 2, height, random(100, width - 100), random(50, height / 2)));
     }
 
     for (let i = fireworks.length - 1; i >= 0; i--) {
         fireworks[i].draw();
         fireworks[i].update(i);
     }
-    
+
     for (let i = sparks.length - 1; i >= 0; i--) {
         sparks[i].draw();
         sparks[i].update(i);
@@ -194,6 +194,7 @@ const countdownSection = document.getElementById('countdown-section');
 const messageSection = document.getElementById('message-section');
 const unlockBtn = document.getElementById('unlock-btn');
 const fireworksBtn = document.getElementById('fireworks-btn');
+let isCelebrating = false;
 
 // Set New Year Date (For demo, set to 10 seconds from now if we want instant gratification, 
 // or strictly Jan 1st 2026. Given the request, user likely wants to see it work.)
@@ -226,7 +227,7 @@ function updateCountdown() {
     document.getElementById('hours').innerText = h < 10 ? '0' + h : h;
     document.getElementById('minutes').innerText = m < 10 ? '0' + m : m;
     document.getElementById('seconds').innerText = s < 10 ? '0' + s : s;
-    
+
     // FOR TESTING: Show unlock button immediately if user wants (optional)
     // Uncomment next line to debug flow:
     // unlockBtn.classList.remove('hidden'); 
@@ -234,32 +235,126 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000);
 
-// Interaction
-let isCelebrating = false;
+// --- Audio Control ---
+const musicBtn = document.getElementById('music-toggle');
+const bgMusic = document.getElementById('bg-music');
+// Try to lower volume initially
+bgMusic.volume = 0.5;
 
+let isPlaying = false;
+musicBtn.addEventListener('click', () => {
+    if (isPlaying) {
+        bgMusic.pause();
+        musicBtn.innerText = '🎵'; // Icon for Play (or Muted state indication)
+    } else {
+        bgMusic.play().catch(e => console.log("Audio play failed (user interaction needed first):", e));
+        musicBtn.innerText = '⏸️';
+    }
+    isPlaying = !isPlaying;
+});
+
+// --- Typewriter / Staggered Text Effect ---
+// logic moved to click handler below
+
+// Hook into the unlock event
 unlockBtn.addEventListener('click', () => {
     countdownSection.classList.remove('active-section');
     countdownSection.classList.add('hidden-section');
-    
+
+    // Auto-play music if not already playing (needs user interaction which click provides)
+    if (!isPlaying) {
+        bgMusic.play().then(() => {
+            isPlaying = true;
+            musicBtn.innerText = '⏸️';
+        }).catch(e => console.log("Audio blocked", e));
+    }
+
     setTimeout(() => {
         messageSection.classList.remove('hidden-section');
         messageSection.classList.add('active-section');
-        isCelebrating = true; // Auto start fireworks
+        // Removed auto-play message animation
+        // playMessageAnimation(); 
+        isCelebrating = true;
     }, 800);
 });
 
-fireworksBtn.addEventListener('click', () => {
-    // Just intensify or simple interaction
-    for(let i=0; i<5; i++) {
-        fireworks.push(new Firework(width/2, height, random(100, width-100), random(50, height/2)));
-    }
+// --- Magic Cursor Trail ---
+document.addEventListener('mousemove', (e) => {
+    const trail = document.createElement('div');
+    trail.className = 'cursor-trail';
+    trail.style.left = e.clientX + 'px';
+    trail.style.top = e.clientY + 'px';
+    document.body.appendChild(trail);
+
+    // Animate out
+    setTimeout(() => {
+        trail.style.transform = 'scale(0)';
+        trail.style.opacity = '0';
+    }, 50);
+
+    setTimeout(() => {
+        trail.remove();
+    }, 500);
 });
 
-// For demonstration purposes, if the countdown is far away, we might want to let the user
-// click slightly earlier or have a 'secret' unlock.
-// Let's make the "Waiting for our moment..." text clickable as a dev secret to test.
-document.querySelector('.subtitle').addEventListener('click', () => {
-    unlockBtn.classList.remove('hidden');
+// Remove the old simple listener that was replaced
+// unlockBtn.addEventListener('click', ...) <--- We overrode the behavior above by re-declaring specific logic or just appending?
+// Actually in JS `addEventListener` appends. We should remove the old logic or ensure they don't conflict. 
+// The old logic was:
+// unlockBtn.addEventListener('click', () => {
+//    countdownSection.classList.remove('active-section'); ...
+// });
+// 
+// To keep it clean, let's Replace the OLD event listener section in the file content.
+
+fireworksBtn.addEventListener('click', () => {
+    // 1. Intensify Fireworks
+    for (let i = 0; i < 8; i++) {
+        setTimeout(() => {
+            fireworks.push(new Firework(width / 2, height, random(100, width - 100), random(50, height / 2)));
+        }, i * 100);
+    }
+
+    // 2. Reveal Message (if not already revealed)
+    const msgContainer = document.getElementById('dynamic-message');
+    // Check if we already added the paragraph elements (to prevent duplicates)
+    if (!msgContainer.querySelector('p')) {
+        // Create the paragraphs
+        const texts = [
+            "hey aditi… 💗 happy new year to my lovely sweetheart 🎉✨",
+            "i want to say that every year pass and i'm gonna increase your expectations from me 💪💞 i love doing things for you 🥰 hahahahaha 😭😂 no bs tho 🤍",
+            "this year has been a lot 🫠 from jan to march to may to july to december 📆💭 this year has been a lot. i have been a lot.",
+            "ik there are many flaws in me 🤍 and i am trying to be the man for you 🧍‍♂️❤️‍🔥 its not my insecurity 😌 its just the way i function 🧠 i never publish my projects online till i feel satisfied 💻✨ i feel i'm not perfect for you 🫂💔",
+            "this year i'm gonna be even better for you 📈❤️ evry year 2026 27 28....... every year i'm gonna be better for you ♾️✨",
+            "my day starts with you 🌅💖 and ends with you 🌙💖",
+            "i hope 2026 has a lot of ups 📈✨ and few downs 📉😌 hahahaahah 😭😂",
+            "i love you my girl 🫶💘… my bubu 🐻💞",
+            "i hope you never unlove me 🥺🤍"
+        ];
+
+        texts.forEach((text, i) => {
+            const p = document.createElement('p');
+            p.innerText = text;
+            p.style.marginBottom = "15px";
+            p.style.opacity = "0";
+            p.style.transform = "translateY(10px)";
+            p.style.transition = `all 0.5s ease ${i * 0.3}s`; // Staggered reveal
+            msgContainer.appendChild(p);
+
+            // Trigger fade in for each
+            setTimeout(() => {
+                p.style.opacity = "1";
+                p.style.transform = "translateY(0)";
+            }, 100);
+        });
+
+        // Trigger container fade in
+        setTimeout(() => {
+            msgContainer.classList.add('revealed');
+        }, 100);
+
+        fireworksBtn.innerText = "Happy New Year, Aditi! 💖";
+    }
 });
 
 initParticles();
