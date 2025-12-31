@@ -1,0 +1,268 @@
+:root {
+    --bg-color: #0F172A;
+    /* Deep Midnight Blue */
+    --accent-gold: #FFD700;
+    --accent-pink: #FF69B4;
+    --text-white: #F8FAFC;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    --neon-glow: 0 0 20px rgba(255, 215, 0, 0.5);
+    --font-heading: 'Playfair Display', serif;
+    --font-body: 'Montserrat', sans-serif;
+    --font-cinzel: 'Cinzel', serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-white);
+    font-family: var(--font-body);
+    overflow: hidden;
+    /* Prevent scrolling for immersive feel */
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Background Canvas */
+#bgCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Container & Layout */
+.container {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    max-width: 800px;
+    padding: 2rem;
+    text-align: center;
+}
+
+section {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    transition: all 0.8s ease-in-out;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.active-section {
+    opacity: 1;
+    pointer-events: all;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+.hidden-section {
+    opacity: 0;
+    pointer-events: none;
+    transform: translate(-50%, -40%) scale(0.95);
+}
+
+/* Glassmorphism Card */
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    padding: 4rem 2rem;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+/* Typography */
+.title {
+    font-family: var(--font-cinzel);
+    font-size: 2.5rem;
+    color: var(--accent-gold);
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.romantic-title {
+    font-family: var(--font-heading);
+    font-size: 3.5rem;
+    /* Larger for impact */
+    background: linear-gradient(45deg, var(--accent-gold), var(--accent-pink));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin-bottom: 1.5rem;
+}
+
+.subtitle {
+    font-family: var(--font-heading);
+    font-style: italic;
+    font-weight: 300;
+    margin-top: 1.5rem;
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+/* Countdown Timer */
+.countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.time-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.time-unit span {
+    font-size: 3rem;
+    font-family: var(--font-cinzel);
+    font-weight: 700;
+    line-height: 1;
+    background: linear-gradient(180deg, #fff, #bbb);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+.time-unit label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 0.5rem;
+    color: var(--accent-gold);
+}
+
+/* Memory Lane */
+.memory-lane {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin: 3rem 0;
+    flex-wrap: wrap;
+}
+
+.memory-card {
+    background: #fff;
+    padding: 10px 10px 25px 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+    width: 150px;
+    color: #333;
+    border-radius: 2px;
+}
+
+.memory-card:hover {
+    transform: scale(1.1) rotate(0deg) !important;
+    z-index: 10;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.photo-placeholder {
+    background: #eee;
+    height: 120px;
+    width: 100%;
+    background: linear-gradient(45deg, #f3ec78, #af4261);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.caption {
+    font-family: 'Shadows Into Light', cursive, var(--font-body);
+    /* Using a cursive font fallback */
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+/* Buttons */
+.glow-button {
+    margin-top: 2.5rem;
+    padding: 1rem 3rem;
+    font-size: 1.1rem;
+    background: transparent;
+    color: var(--accent-gold);
+    border: 2px solid var(--accent-gold);
+    border-radius: 50px;
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.1);
+}
+
+.glow-button:hover {
+    background: var(--accent-gold);
+    color: var(--bg-color);
+    box-shadow: 0 0 30px rgba(255, 215, 0, 0.6);
+    transform: translateY(-2px);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 600px) {
+    .title {
+        font-size: 1.8rem;
+    }
+
+    .romantic-title {
+        font-size: 2.5rem;
+    }
+
+    .countdown-timer {
+        gap: 1rem;
+    }
+
+    .time-unit span {
+        font-size: 2rem;
+    }
+
+    .glass-card {
+        padding: 2rem 1rem;
+    }
+
+    .countdown-timer {
+        flex-wrap: wrap;
+    }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year, My Love</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <main class="container">
+        <!-- Section 1: The Anticipation (Countdown) -->
+        <section id="countdown-section" class="active-section">
+            <div class="glass-card fade-in">
+                <h1 class="title">The Magic Begins In...</h1>
+                <div class="countdown-timer">
+                    <div class="time-unit">
+                        <span id="days">00</span>
+                        <label>Days</label>
+                    </div>
+                    <div class="time-unit">
+                        <span id="hours">00</span>
+                        <label>Hours</label>
+                    </div>
+                    <div class="time-unit">
+                        <span id="minutes">00</span>
+                        <label>Minutes</label>
+                    </div>
+                    <div class="time-unit">
+                        <span id="seconds">00</span>
+                        <label>Seconds</label>
+                    </div>
+                </div>
+                <p class="subtitle">Waiting for our moment...</p>
+                <button id="unlock-btn" class="glow-button hidden">Open Your Gift 🎁</button>
+            </div>
+        </section>
+
+        <!-- Section 2: The Message (Hidden initially) -->
+        <section id="message-section" class="hidden-section">
+            <div class="glass-card slide-up">
+                <h2 class="romantic-title">Happy New Year!</h2>
+                <div class="message-content">
+                    <p>To the one who makes every year brighter.</p>
+                    <p>Here's to another 365 days of making memories, laughing together, and growing our love.</p>
+
+                    <!-- Memory Lane -->
+                    <div class="memory-lane">
+                        <div class="memory-card" style="transform: rotate(-2deg);">
+                            <div class="photo-placeholder">📷</div>
+                            <p class="caption">Our First Date</p>
+                        </div>
+                        <div class="memory-card" style="transform: rotate(3deg); margin-top: 20px;">
+                            <div class="photo-placeholder">✈️</div>
+                            <p class="caption">Our Adventures</p>
+                        </div>
+                        <div class="memory-card" style="transform: rotate(-1deg);">
+                            <div class="photo-placeholder">❤️</div>
+                            <p class="caption">Just Us</p>
+                        </div>
+                    </div>
+
+                    <p class="signature">Forever yours,</p>
+                    <p class="my-name">[Your Name]</p>
+                </div>
+                <button id="fireworks-btn" class="glow-button">Light Up The Sky ✨</button>
+            </div>
+        </section>
+    </main>
+
+    <div class="overlay"></div>
+    <script src="script.js"></script>
+</body>
+
+</html>
