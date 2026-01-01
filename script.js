@@ -196,11 +196,8 @@ const unlockBtn = document.getElementById('unlock-btn');
 const fireworksBtn = document.getElementById('fireworks-btn');
 let isCelebrating = false;
 
-// Set New Year Date (For demo, set to 10 seconds from now if we want instant gratification, 
-// or strictly Jan 1st 2026. Given the request, user likely wants to see it work.)
-// Let's set it to next year Jan 1st for realism, but add a cheat to unlock manually.
-const nextYear = new Date().getFullYear() + 1;
-const newYearDate = new Date(`Jan 1, ${nextYear} 00:00:00`).getTime();
+// Set New Year Date to Jan 1, 2026
+const newYearDate = new Date('Jan 1, 2026 00:00:00').getTime();
 
 function updateCountdown() {
     const now = new Date().getTime();
